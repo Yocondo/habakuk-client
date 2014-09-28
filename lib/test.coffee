@@ -24,8 +24,7 @@ handler = new Handler
 
 options =
 	url: 'http://localhost:3000'
-	clientType: 'test'
-	clientId: 'test-bigfoot'
+	component: 'habakuk-amazon-product'
 
 zookeeper = new Zookeeper handler, options
 zookeeper.on 'status', (event) -> console.log 'status:', event

@@ -22,11 +22,11 @@ class Zookeeper extends EventEmitter
 		@socket.on 'connect', =>
 			Zookeeper.logger.info '[zookeeper] connected, registering...'
 			@socket.emit 'register',
-				clientId: @options.clientId || "#{@options.clientType}-#{require('os').hostname().toLowerCase()}"
-				clientType: @options.clientType
+				component: @options.component
+				host: @options.host || require('os').hostname().toLowerCase()
 
 		@handler.on 'heartbeat', (message) =>
-			Zookeeper.logger.info 'heartbeat:', message
+			Zookeeper.logger.debug? '[zookeeper] heartbeat:', message
 			@socket.emit 'heartbeat', message
 
 	setStatus: (newStatus) ->
