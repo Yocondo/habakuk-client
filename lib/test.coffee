@@ -6,8 +6,8 @@ class Handler extends EventEmitter
 		@heartbeatSequence = 0
 
 	sendHeartbeat = ->
-		@emit 'heartbeat', "Heartbeat ##{@heartbeatSequence}"
-		@heartbeatSequence += 1
+#		@emit 'heartbeat', "Heartbeat ##{@heartbeatSequence}"
+#		@heartbeatSequence += 1
 
 	start: (next) ->
 		unless @heartbeatInterval

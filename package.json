@@ -9,7 +9,8 @@
     "url": "git+ssh://git@bitbucket.org:yocondo/habakuk-client.git"
   },
   "dependencies": {
-    "es6-promise": "^1.0.0",
+    "es6-promise": "^2.0.0",
+    "git-info": "yocondo/git-info",
     "socket.io-client": "^1.1.0"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 { EventEmitter } = require 'events'
+{ Promise } = require 'es6-promise'
 
 class Zookeeper extends EventEmitter
 	@logger: console
@@ -20,14 +21,28 @@ class Zookeeper extends EventEmitter
 		@socket.on 'stop', => @stop()
 
 		@socket.on 'connect', =>
-			Zookeeper.logger.info '[zookeeper] connected, registering...'
-			@socket.emit 'register',
-				component: @options.component
-				host: @options.host || require('os').hostname().toLowerCase()
+			@getRegisterMessage()
+			.then (registerMessage) =>
+				Zookeeper.logger.info '[zookeeper] connected, registering:', JSON.stringify registerMessage
+				@socket.emit 'register', registerMessage
+				@handler.on 'heartbeat', (message) =>
+					Zookeeper.logger.debug? '[zookeeper] heartbeat:', message
+					@socket.emit 'heartbeat', message
+			.catch (err) =>
+				Zookeeper.logger.error '[zookeeper] error registering:', err.stack || err
 
-		@handler.on 'heartbeat', (message) =>
-			Zookeeper.logger.debug? '[zookeeper] heartbeat:', message
-			@socket.emit 'heartbeat', message
+	getRegisterMessage: ->
+		getVersion = =>
+			console.log 'options:', @options
+			return Promise.resolve @options.version if @options.version
+			Zookeeper.logger.debug '[zookeeper] no version specified, using git commit id instead'
+			(require 'git-info')().then (git) -> git.shortCommitId
+
+		getVersion()
+		.then (version) =>
+			component: @options.component
+			host: @options.host || require('os').hostname().toLowerCase()
+			version: version
 
 	setStatus: (newStatus) ->
 		if newStatus isnt @status.status
