@@ -1,7 +1,7 @@
 {
   "name": "habakuk-client",
-  "version": "1.0.0",
-  "description": "Crawler Client",
+  "version": "1.0.1",
+  "description": "Habakuk Zookeeper Client",
   "private": true,
   "main": "lib/index.js",
   "repository": {
