@@ -33,9 +33,8 @@ class Zookeeper extends EventEmitter
 
 	getRegisterMessage: ->
 		getVersion = =>
-			console.log 'options:', @options
 			return Promise.resolve @options.version if @options.version
-			Zookeeper.logger.debug '[zookeeper] no version specified, using git commit id instead'
+			Zookeeper.logger.debug? '[zookeeper] no version specified, using git commit id instead'
 			(require 'git-info')().then (git) -> git.shortCommitId
 
 		getVersion()
